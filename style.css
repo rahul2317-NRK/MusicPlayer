@@ -1,0 +1,301 @@
+body {
+    /*display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;*/
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: rgba( 255, 255, 255, 0.7 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 13px );
+    -webkit-backdrop-filter: blur( 13px );
+.main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 30px;
+    padding: 20px 0;
+}
+.player {
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    /*box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
+    }
+
+.cover img {
+    height: 170px;
+    width: 160px;
+    color: #aaa;
+    
+}
+
+.info {
+    margin: 15px 0;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.artist,.title{
+    font-size: 12px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    margin: 20px 0;
+    color: #aaa;
+}
+
+button {
+   /* From https://css.glass */
+background: rgba(98, 103, 136, 0.48);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.9px);
+-webkit-backdrop-filter: blur(6.9px);
+border: 1px solid rgba(98, 103, 136, 0.3);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    /* From https://css.glass */
+background: rgba(210, 143, 122, 0.48);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.9px);
+-webkit-backdrop-filter: blur(6.9px);
+border: 1px solid rgba(210, 143, 122, 0.3);
+}
+.volume{
+    color: #aaa;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+
+.progress {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    margin-top: 10px;
+    color: #aaa;
+}
+
+.progress span {
+    width: 50px; /* Adjust width as necessary */
+    text-align: center; /* Center the text */
+}
+
+.progress-bar {
+    flex-grow: 1; /* Allow the progress bar to take available space */
+    margin: 0 10px; /* Space between the timers and the progress bar */
+    width: 100%;
+    /* From https://css.glass */
+background: rgba(190, 194, 194, 0.16);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.9px);
+-webkit-backdrop-filter: blur(6.9px);
+border: 1px solid rgba(190, 194, 194, 0.3);
+}
+.song {
+    cursor: pointer; /* Indicate that it's clickable */
+    padding: 5px; /* Add some padding for spacing */
+    transition: background 0.3s; /* Add a transition for hover effect */
+}
+
+.song:hover {
+    background: #0f0f0f; /* Change background on hover */
+}
+.albums{
+    color: #aaa;
+    border-radius: 10px;
+    
+    /*box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); */
+    flex-shrink: 3;
+     overflow-y: auto; /* Enable vertical scroll */
+    scrollbar-width: thin; /* For Firefox - makes the scrollbar thin */
+
+}
+
+.albums::-webkit-scrollbar {
+    width: 8px; /* Adjust width for vertical scrollbar */
+}
+
+.albums::-webkit-scrollbar-track {
+    background: #1c1e22; /* Scrollbar track color */
+    border-radius: 10px;
+}
+
+.albums::-webkit-scrollbar-thumb {
+    background: #f39c12; /* Scrollbar thumb color */
+    border-radius: 10px;
+}
+/* Style for search bar */
+.search-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    background-color: #1c1e22;
+    border-bottom: 1px solid #ddd;
+}
+
+#searchInput {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+#searchButton {
+    padding: 10px;
+    margin-left: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Style for the main content area below the search bar */
+.player, .albums {
+  background-color: #1c1e22;
+    
+    padding: 20px;
+    width: 500px; /* Fixed width */
+    height: 500px; /* Fixed height */
+    
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+     /* Prevent shrinking */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* Distribute content evenly */
+    
+}
+.player{
+    overflow: hidden;
+    text-align: center;
+}
+
+
+.albums {
+    margin-bottom: 20px;
+}
+.albums h2{
+    text-align: center;
+    font-size: 32px;
+}
+.album-name {
+    cursor: pointer;
+    padding: 10px;
+    background: #333;
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.album-name:hover {
+    background: #444;
+}
+
+.song {
+    padding-left: 20px;
+    color: #aaa;
+}
+
+
+/* Base styles (for larger screens) */
+/* ... existing styles here ... */
+
+/* Responsive styles for screens 600px or smaller */
+@media (max-width: 600px) {
+    /* Center-align the content and make it fit within the screen width */
+    body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-bar {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* Main content layout */
+    .main-content {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        align-items: center;
+    }
+
+    /* Player and albums dimensions */
+    .player, .albums {
+        width: 90%;
+        max-width: 100%;
+        height: auto; /* Allows height to adjust based on content */
+        padding: 15px;
+        margin: 0 auto;
+    }
+
+    .player {
+        margin-bottom: 20px;
+    }
+
+    /* Cover image adjustments */
+    .cover img {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Adjust font sizes for smaller screens */
+    .title {
+        font-size: 1.2em;
+    }
+
+    .artist {
+        font-size: 1em;
+    }
+
+    /* Control buttons spacing */
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    /* Progress bar and volume adjustments */
+    .progress-bar, #volume {
+        width: 100%;
+    }
+
+    /* Album list with scrolling */
+    .albums {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    /* Adjust album and song styling */
+    .album-name, .song {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+}
