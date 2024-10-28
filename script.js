@@ -3,27 +3,27 @@ const albums = [
             title: "Devara Part-1",
         songs: [
             { title: "Ayudha Pooja", 
-            src: "C:/Users/rahul/Documents/Documents/Projects/m1/[iSongs.info] 06 - Ayudha Pooja.mp3", 
+            src: "[iSongs.info] 06 - Ayudha Pooja.mp3", 
             artist: "Kala Bhairava", 
             image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
 
             { title: "Red Sea", 
-            src: "C:/Users/rahul/Documents/Documents/Projects/m1/[iSongs.info] 05 - Red Sea.mp3", 
+            src: "[iSongs.info] 05 - Red Sea.mp3", 
             artist: "Anirudh", 
             image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
 
             { title: "Daavudi", 
-            src: "C:/Users/rahul/Downloads/[iSongs.info] 04 - Daavudi.mp3", 
+            src: "[iSongs.info] 04 - Daavudi.mp3", 
             artist: "Anirudh", 
             image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
 
             { title: "Chuttamalle", 
-            src: "C:/Users/rahul/Downloads/[iSongs.info] 03 - Chuttamalle.mp3", 
+            src: "[iSongs.info] 03 - Chuttamalle.mp3", 
             artist: "Anirudh", 
             image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
 
             { title: "Fear Song", 
-            src: "C:/Users/rahul/Downloads/[iSongs.info] 02 - Fear Song.mp3", 
+            src: "[iSongs.info] 02 - Fear Song.mp3", 
             artist: "Anirudh", 
             image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
         ]
@@ -33,13 +33,13 @@ const albums = [
         songs: [
             {title: "Manasilaayo", 
             artist: "Anirudh",
-            src: "C:/Users/rahul/Downloads/[iSongs.info] 01 - Manasilaayo.mp3", 
+            src: "[iSongs.info] 01 - Manasilaayo.mp3", 
             image: "https://upload.wikimedia.org/wikipedia/en/6/68/Vettaiyan_poster.jpg" 
             },
             {
             title: "Hunter", 
             artist: "Anirudh",
-            src: "C:/Users/rahul/Documents/Documents/Projects/m1/[iSongs.info] 02 - Hunter Entry.mp3", 
+            src: "[iSongs.info] 02 - Hunter Entry.mp3", 
             image: "https://upload.wikimedia.org/wikipedia/en/6/68/Vettaiyan_poster.jpg" 
             }
         ]
@@ -50,19 +50,19 @@ const albums = [
           {
 title: "Naa Favourite Naa Pellam", 
 artist: "Karthik",
-src: "C:/Users/rahul/Downloads/[iSongs.info] 01 - Naa Favourite Naa Pellam.mp3", 
+src: "[iSongs.info] 01 - Naa Favourite Naa Pellam.mp3", 
 image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Ganaka-New-Release-Date-2.jpg" 
 },
 {
 title: "Santosham Ee Poota", 
 artist: "Karthik",
-src: "C:/Users/rahul/Downloads/[iSongs.info] 05 - Santosham Ee Poota.mp3", 
+src: "[iSongs.info] 05 - Santosham Ee Poota.mp3", 
 image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Ganaka-New-Release-Date-2.jpg" 
 },
 {
 title: "Nuvve Naku Lokam", 
 artist: "Karthik",
-src: "C:/Users/rahul/Downloads/[iSongs.info] 02 - Nuvve Naku Lokam.mp3", 
+src: "[iSongs.info] 02 - Nuvve Naku Lokam.mp3", 
 image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Ganaka-New-Release-Date-2.jpg" 
 }
 ]
@@ -73,7 +73,7 @@ image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Gan
                     {
                         title: "Hey Rangule", 
 artist: "Ramya, Anurag",
-src: "C:/Users/rahul/Documents/Documents/Projects/m1/[iSongs.info] 01 - Hey Rangule.mp3", 
+src: "[iSongs.info] 01 - Hey Rangule.mp3", 
 image: "https://upload.wikimedia.org/wikipedia/en/5/54/Amaran_2024_poster.jpg" 
 
                     },
@@ -85,19 +85,19 @@ image: "https://upload.wikimedia.org/wikipedia/en/5/54/Amaran_2024_poster.jpg"
                  {
 title: "Pothoo Ne Pothoo", 
 artist: "Govind",
-src: "C:/Users/rahul/Downloads/[iSongs.info] 04 - Pothoo Ne Pothoo.mp3", 
+src: "[iSongs.info] 04 - Pothoo Ne Pothoo.mp3", 
 image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg" 
 },
 {
 title: "Palle Seema", 
 artist: "Govind",
-src: "C:/Users/rahul/Downloads/[iSongs.info] 03 - Palle Seema.mp3", 
+src: "[iSongs.info] 03 - Palle Seema.mp3", 
 image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg" 
 },
 {
 title: "Evaro Ithanevaro", 
 artist: "Govind",
-src: "C:/Users/rahul/Documents/Documents/Projects/m1/[iSongs.info] 01 - Evaro Ithanevaro.mp3", 
+src: "[iSongs.info] 01 - Evaro Ithanevaro.mp3", 
 image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg"
 }
                 ]
