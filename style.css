@@ -84,32 +84,62 @@ border: 1px solid rgba(210, 143, 122, 0.3);
     justify-content: center;
     justify-items: center;
 }
-
-
 .progress {
     display: flex;
-    align-items: center; /* Align items vertically in the center */
+    align-items: center;
     margin-top: 10px;
     color: #aaa;
 }
 
 .progress span {
-    width: 50px; /* Adjust width as necessary */
-    text-align: center; /* Center the text */
+    width: 50px;
+    text-align: center;
 }
 
+/* Default styling for the range */
 .progress-bar {
-    flex-grow: 1; /* Allow the progress bar to take available space */
-    margin: 0 10px; /* Space between the timers and the progress bar */
+    -webkit-appearance: none;
+    appearance: none;
     width: 100%;
-    /* From https://css.glass */
-background: rgba(190, 194, 194, 0.16);
-border-radius: 16px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(6.9px);
--webkit-backdrop-filter: blur(6.9px);
-border: 1px solid rgba(190, 194, 194, 0.3);
+    height: 8px;
+    border-radius: 5px;
+    background-color: #bdc3c7;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
 }
+
+/* Filled portion color */
+.progress-bar::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: #bdc3c7;
+}
+
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 12px;
+    width: 12px;
+    background-color: #707b7c;
+    border-radius: 50%;
+    margin-top: -2px; /* Aligns the thumb with the track */
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+   cursor: pointer;
+}
+
+
+
+/* Use background gradient for the completed portion */
+#progress-bar {
+    background: linear-gradient(to right, #707b7c 0%, #707b7c var(--progress), #bdc3c7 var(--progress), #bdc3c7 100%);
+}
+
+
+
+
 .song {
     cursor: pointer; /* Indicate that it's clickable */
     padding: 5px; /* Add some padding for spacing */
@@ -216,65 +246,6 @@ border: 1px solid rgba(190, 194, 194, 0.3);
     color: #aaa;
 }
 
-/* Style for progress bar (song progress) */
-#progress-bar {
-    appearance: none;
-    width: 100%;
-    height: 8px; /* Adjust the thickness */
-    background-color: #797d7f ; /* Background color of the progress bar */
-}
-
-#progress-bar::-webkit-slider-thumb {
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    background-color: white; /* Color of the draggable thumb */
-    border-radius: 50%;
-}
-
-#progress-bar::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-/* Style for volume control */
-#volume {
-    appearance: none;
-    width: 100%;
-    height: 8px; /* Adjust the thickness */
-}
-
-/* Track for Webkit browsers */
-#volume::-webkit-slider-runnable-track {
-    background-color: #ddd !important; /* Gray track */
-    height: 8px;
-    border-radius: 4px;
-}
-
-/* Track for Firefox */
-#volume::-moz-range-track {
-    background-color: #ddd !important; /* Gray track */
-    height: 8px;
-    border-radius: 4px;
-}
-
-/* Thumb styles */
-#volume::-webkit-slider-thumb {
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    background-color: white !important; /* Color of the draggable thumb */
-    border-radius: 50%;
-}
-
-#volume::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background-color: white !important;
-    border-radius: 50%;
-}
 
 
 /* Base styles (for larger screens) */
@@ -303,10 +274,12 @@ border: 1px solid rgba(190, 194, 194, 0.3);
         align-items: center;
     }
 
-    /* Stack player and albums vertically */
+    /* Player and albums dimensions */
     .player, .albums {
         width: 90%;
         max-width: 100%;
+        height: auto; /* Allows height to adjust based on content */
+        padding: 15px;
         margin: 0 auto;
     }
 
