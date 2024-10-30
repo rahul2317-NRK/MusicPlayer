@@ -299,3 +299,77 @@ function loadSong(src, title, artist, image) {
     };
 }
 
+let currentAlbum = null;
+let currentSongIndex = 0;
+
+function loadSong(album, songIndex) {
+    currentAlbum = album;
+    currentSongIndex = songIndex;
+    const song = album.songs[songIndex];
+
+    // Set song information
+    audio.src = song.src;
+    titleDisplay.textContent = song.title;
+    artistDisplay.textContent = song.artist || "Unknown Artist";
+    document.getElementById('cover').src = song.image;
+
+    audio.play();
+    playButton.style.display = 'none';
+    pauseButton.style.display = 'block';
+
+    // Scroll to player section (if exists)
+    const playerSection = document.getElementById('player-section');
+    if (playerSection) {
+        playerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    audio.onloadedmetadata = () => {
+        durationDisplay.textContent = formatTime(audio.duration);
+        progressBar.max = audio.duration;
+    };
+}
+
+// Play the next song automatically when the current song ends
+function playNextSong() {
+    if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
+        currentSongIndex += 1;
+        loadSong(currentAlbum, currentSongIndex);
+    } else {
+        audio.pause();
+        playButton.style.display = 'block';
+        pauseButton.style.display = 'none';
+    }
+}
+
+// Event listener for when a song ends
+audio.addEventListener('ended', playNextSong);
+
+// Initialize album and song list
+function createMusicList() {
+    const albumList = document.getElementById('albumList');
+    albumList.innerHTML = ''; // Clear existing content
+
+    albums.forEach((album, albumIndex) => {
+        const albumDiv = document.createElement('div');
+        albumDiv.classList.add('album');
+        albumDiv.innerHTML = `<h3>${album.title}</h3>`;
+
+        album.songs.forEach((song, songIndex) => {
+            const songDiv = document.createElement('div');
+            songDiv.classList.add('song');
+            songDiv.textContent = song.title;
+
+            songDiv.addEventListener('click', () => {
+                loadSong(album, songIndex); // Load and play the selected song
+            });
+
+            albumDiv.appendChild(songDiv);
+        });
+
+        albumList.appendChild(albumDiv);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', createMusicList);
+
+
