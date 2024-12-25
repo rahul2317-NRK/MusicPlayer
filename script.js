@@ -303,112 +303,6 @@ function loadSong(src, title, artist, image) {
         progressBar.max = audio.duration;
     };
 }
-const previousButton = document.getElementById('previous');
-const nextButton = document.getElementById('next');
-let currentAlbum = null;
-let currentSongIndex = 0;
-
-// Load a specific song
-function loadSong(album, songIndex) {
-    currentAlbum = album;
-    currentSongIndex = songIndex;
-    const song = album.songs[songIndex];
-
-    // Set song details
-    audio.src = song.src;
-    titleDisplay.textContent = song.title;
-    artistDisplay.textContent = song.artist || "Unknown Artist";
-    document.getElementById('cover').src = song.image;
-
-    audio.play();
-    playButton.style.display = 'none';
-    pauseButton.style.display = 'block';
-
-    // Scroll to player section (if exists)
-    const playerSection = document.getElementById('player-section');
-    if (playerSection) {
-        playerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // Set duration and progress bar
-    audio.onloadedmetadata = () => {
-        durationDisplay.textContent = formatTime(audio.duration);
-        progressBar.max = audio.duration;
-    };
-}
-
-// Play the next song
-function playNextSong() {
-    if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
-        currentSongIndex += 1; // Move to the next song
-        loadSong(currentAlbum, currentSongIndex);
-    } else {
-        console.log('No next song available');
-        audio.pause();
-        playButton.style.display = 'block';
-        pauseButton.style.display = 'none';
-    }
-}
-
-// Play the previous song
-function playPreviousSong() {
-    if (currentAlbum && currentSongIndex > 0) {
-        currentSongIndex -= 1; // Move to the previous song
-        loadSong(currentAlbum, currentSongIndex);
-    } else {
-        console.log('No previous song available');
-    }
-}
-
-// Event listener for when a song ends
-audio.addEventListener('ended', playNextSong);
-
-// Event listeners for the Previous and Next buttons
-previousButton.addEventListener('click', playPreviousSong);
-nextButton.addEventListener('click', playNextSong);
-
-// Create the music list
-function createMusicList() {
-    const albumList = document.getElementById('albumList');
-    albumList.innerHTML = ''; // Clear existing content
-
-    albums.forEach((album, albumIndex) => {
-        const albumDiv = document.createElement('div');
-        albumDiv.classList.add('album');
-        albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-
-        album.songs.forEach((song, songIndex) => {
-            const songDiv = document.createElement('div');
-            songDiv.classList.add('song');
-            songDiv.textContent = song.title;
-
-            songDiv.addEventListener('click', () => {
-                loadSong(album, songIndex); // Load and play the selected song
-            });
-
-            albumDiv.appendChild(songDiv);
-        });
-
-        albumList.appendChild(albumDiv);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', createMusicList);
-
-// Play button functionality
-playButton.addEventListener('click', () => {
-    audio.play();
-    playButton.style.display = 'none';
-    pauseButton.style.display = 'block';
-});
-
-// Pause button functionality
-pauseButton.addEventListener('click', () => {
-    audio.pause();
-    playButton.style.display = 'block';
-    pauseButton.style.display = 'none';
-});
-
 
 let currentAlbum = null;
 let currentSongIndex = 0;
@@ -468,11 +362,12 @@ function createMusicList() {
         album.songs.forEach((song, songIndex) => {
             const songDiv = document.createElement('div');
             songDiv.classList.add('song');
-            songDiv.textContent = song.title;
+      
+      songDiv.textContent = song.title;
 
             songDiv.addEventListener('click', () => {
                 loadSong(album, songIndex); // Load and play the selected song
-            });
+            }); give me modified code which allows the functioning of previous and next button 
 
             albumDiv.appendChild(songDiv);
         });
@@ -482,5 +377,4 @@ function createMusicList() {
 }
 
 document.addEventListener('DOMContentLoaded', createMusicList);
-
 
