@@ -198,30 +198,34 @@ function performSearch() {
     const albumList = document.getElementById('albumList');
     albumList.innerHTML = ''; // Clear the current album list
 
-    albums.forEach(album => {
+    albums.forEach((album, albumIndex) => {
         // Check if the album title matches the search term
         if (album.title.toLowerCase().includes(searchTerm)) {
-            displayAlbum(album);
+            displayAlbum(album, albumIndex);
         } else {
             // Check if any song in the album matches the search term
-            const matchingSongs = album.songs.filter(song => 
+            const matchingSongs = album.songs.filter(song =>
                 song.title.toLowerCase().includes(searchTerm)
             );
-            
+
             if (matchingSongs.length > 0) {
                 const albumDiv = document.createElement('div');
                 albumDiv.classList.add('album');
                 albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-                
+
                 matchingSongs.forEach(song => {
+                    const songIndex = album.songs.findIndex(
+                        s => s.title === song.title
+                    );
+
                     const songDiv = document.createElement('div');
                     songDiv.classList.add('song');
                     songDiv.textContent = song.title;
-                    songDiv.setAttribute('data-src', song.src);
-                    songDiv.setAttribute('data-image', song.image);
+
                     songDiv.addEventListener('click', () => {
-                        loadSong(song.src, song.title, "Unknown Artist", song.image);
+                        loadSong(album, songIndex); // Pass album and songIndex
                     });
+
                     albumDiv.appendChild(songDiv);
                 });
 
@@ -236,25 +240,26 @@ function performSearch() {
     }
 }
 
-function displayAlbum(album) {
+function displayAlbum(album, albumIndex) {
     const albumDiv = document.createElement('div');
     albumDiv.classList.add('album');
     albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-    
-    album.songs.forEach(song => {
+
+    album.songs.forEach((song, songIndex) => {
         const songDiv = document.createElement('div');
         songDiv.classList.add('song');
         songDiv.textContent = song.title;
-        songDiv.setAttribute('data-src', song.src);
-        songDiv.setAttribute('data-image', song.image);
+
         songDiv.addEventListener('click', () => {
-            loadSong(song.src, song.title, "Unknown Artist", song.image);
+            loadSong(album, songIndex); // Pass album and songIndex
         });
+
         albumDiv.appendChild(songDiv);
     });
 
     document.getElementById('albumList').appendChild(albumDiv);
 }
+
 
 // Function to update the volume based on the volume slider
 volumeControl.addEventListener('input', () => {
