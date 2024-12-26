@@ -1,4 +1,4 @@
-const albums = [
+const album = [
     {
             title: "Devara Part-1",
         songs: [
@@ -116,6 +116,12 @@ const progressBar = document.getElementById('progress-bar');
 const currentTimeDisplay = document.getElementById('currentTime');
 const durationDisplay = document.getElementById('duration');
 const volumeControl = document.getElementById('volume');
+const previousButton = document.getElementById('previous');
+const nextButton = document.getElementById('next');
+const albumList = document.getElementById('albumList');
+
+let currentAlbum = null;
+let currentSongIndex = 0;
 
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -123,46 +129,96 @@ function formatTime(seconds) {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function loadSong(src, title, artist, image) {
-    audio.src = src;
-    titleDisplay.textContent = title;
-    artistDisplay.textContent = artist;
-    document.getElementById('cover').src = image;
+function loadSong(album, songIndex) {
+    currentAlbum = album;
+    currentSongIndex = songIndex;
+    const song = album.songs[songIndex];
+
+    if (!song) {
+        console.error("Song not found at index:", songIndex);
+        return;
+    }
+
+    // Set song details
+    audio.src = song.src;
+    titleDisplay.textContent = song.title;
+    artistDisplay.textContent = song.artist || "Unknown Artist";
+    document.getElementById('cover').src = song.image;
 
     audio.play();
     playButton.style.display = 'none';
     pauseButton.style.display = 'block';
 
+    // Set duration and progress bar
     audio.onloadedmetadata = () => {
         durationDisplay.textContent = formatTime(audio.duration);
         progressBar.max = audio.duration;
     };
 }
 
+// Play the next song
+function playNextSong() {
+    if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
+        currentSongIndex += 1; // Move to the next song
+        loadSong(currentAlbum, currentSongIndex);
+    } else {
+        console.log('No next song available');
+        audio.pause();
+        playButton.style.display = 'block';
+        pauseButton.style.display = 'none';
+    }
+}
+
+// Play the previous song
+function playPreviousSong() {
+    if (currentAlbum && currentSongIndex > 0) {
+        currentSongIndex -= 1; // Move to the previous song
+        loadSong(currentAlbum, currentSongIndex);
+    } else {
+        console.log('No previous song available');
+    }
+}
+
+// Create the music list
 function createMusicList() {
-    const albumList = document.getElementById('albumList');
+    console.log("Creating music list...");
+
+    if (!albumList) {
+        console.error("Album list container not found!");
+        return;
+    }
+
     albumList.innerHTML = ''; // Clear existing content
 
-    albums.forEach(album => {
+    albums.forEach((album, albumIndex) => {
         const albumDiv = document.createElement('div');
         albumDiv.classList.add('album');
         albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-        
-        album.songs.forEach(song => {
+        console.log("Album added:", album.title);
+
+        album.songs.forEach((song, songIndex) => {
             const songDiv = document.createElement('div');
             songDiv.classList.add('song');
             songDiv.textContent = song.title;
-            songDiv.setAttribute('data-src', song.src);
-            songDiv.setAttribute('data-image', song.image);
+            console.log("Song added:", song.title);
+
             songDiv.addEventListener('click', () => {
-                loadSong(song.src, song.title, song.artist, song.image);
+                loadSong(album, songIndex); // Load and play the selected song
             });
+
             albumDiv.appendChild(songDiv);
         });
 
         albumList.appendChild(albumDiv);
     });
+    console.log("Music list created successfully.");
 }
+
+// Initialize music list and event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    createMusicList();
+    console.log("DOM loaded and music list initialized.");
+});
 
 playButton.addEventListener('click', () => {
     audio.play();
@@ -172,9 +228,12 @@ playButton.addEventListener('click', () => {
 
 pauseButton.addEventListener('click', () => {
     audio.pause();
-    pauseButton.style.display = 'none';
     playButton.style.display = 'block';
+    pauseButton.style.display = 'none';
 });
+
+previousButton.addEventListener('click', playPreviousSong);
+nextButton.addEventListener('click', playNextSong);
 
 audio.addEventListener('timeupdate', () => {
     const currentTime = audio.currentTime;
@@ -186,194 +245,9 @@ progressBar.addEventListener('input', () => {
     audio.currentTime = progressBar.value;
 });
 
-document.addEventListener('DOMContentLoaded', createMusicList);
+audio.addEventListener('ended', playNextSong);
 
-//---------------------search block-------------------------------------
-
-document.getElementById('searchButton').addEventListener('click', performSearch);
-document.getElementById('searchInput').addEventListener('input', performSearch);
-
-function performSearch() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const albumList = document.getElementById('albumList');
-    albumList.innerHTML = ''; // Clear the current album list
-
-    albums.forEach((album, albumIndex) => {
-        // Check if the album title matches the search term
-        if (album.title.toLowerCase().includes(searchTerm)) {
-            displayAlbum(album, albumIndex);
-        } else {
-            // Check if any song in the album matches the search term
-            const matchingSongs = album.songs.filter(song =>
-                song.title.toLowerCase().includes(searchTerm)
-            );
-
-            if (matchingSongs.length > 0) {
-                const albumDiv = document.createElement('div');
-                albumDiv.classList.add('album');
-                albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-
-                matchingSongs.forEach(song => {
-                    const songIndex = album.songs.findIndex(
-                        s => s.title === song.title
-                    );
-
-                    const songDiv = document.createElement('div');
-                    songDiv.classList.add('song');
-                    songDiv.textContent = song.title;
-
-                    songDiv.addEventListener('click', () => {
-                        loadSong(album, songIndex); // Pass album and songIndex
-                    });
-
-                    albumDiv.appendChild(songDiv);
-                });
-
-                albumList.appendChild(albumDiv);
-            }
-        }
-    });
-
-    // If search term is empty, recreate the original music list
-    if (searchTerm === '') {
-        createMusicList();
-    }
-}
-
-function displayAlbum(album, albumIndex) {
-    const albumDiv = document.createElement('div');
-    albumDiv.classList.add('album');
-    albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-
-    album.songs.forEach((song, songIndex) => {
-        const songDiv = document.createElement('div');
-        songDiv.classList.add('song');
-        songDiv.textContent = song.title;
-
-        songDiv.addEventListener('click', () => {
-            loadSong(album, songIndex); // Pass album and songIndex
-        });
-
-        albumDiv.appendChild(songDiv);
-    });
-
-    document.getElementById('albumList').appendChild(albumDiv);
-}
-
-
-// Function to update the volume based on the volume slider
 volumeControl.addEventListener('input', () => {
     audio.volume = volumeControl.value;
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    createMusicList(); // Assuming this initializes your music list
-});
-
-
-function loadSong(src, title, artist, image) {
-    const audio = document.getElementById('audio');
-    const playButton = document.getElementById('play');
-    const pauseButton = document.getElementById('pause');
-    const titleDisplay = document.getElementById('title');
-    const artistDisplay = document.getElementById('artist');
-    const coverImage = document.getElementById('cover');
-
-    audio.src = src;
-    titleDisplay.textContent = title;
-    artistDisplay.textContent = artist;
-    coverImage.src = image;
-
-    audio.play();
-    playButton.style.display = 'none';
-    pauseButton.style.display = 'block';
-
-    // Ensure the player section exists before trying to scroll
-    const playerSection = document.getElementById('player-section');
-    if (playerSection) {
-        playerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-        console.error('Player section not found');
-    }
-
-    audio.onloadedmetadata = () => {
-        const durationDisplay = document.getElementById('duration');
-        const progressBar = document.getElementById('progress-bar');
-        durationDisplay.textContent = formatTime(audio.duration);
-        progressBar.max = audio.duration;
-    };
-}
-
-let currentAlbum = null;
-let currentSongIndex = 0;
-
-function loadSong(album, songIndex) {
-    currentAlbum = album;
-    currentSongIndex = songIndex;
-    const song = album.songs[songIndex];
-
-    // Set song information
-    audio.src = song.src;
-    titleDisplay.textContent = song.title;
-    artistDisplay.textContent = song.artist || "Unknown Artist";
-    document.getElementById('cover').src = song.image;
-
-    audio.play();
-    playButton.style.display = 'none';
-    pauseButton.style.display = 'block';
-
-    // Scroll to player section (if exists)
-    const playerSection = document.getElementById('player-section');
-    if (playerSection) {
-        playerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    audio.onloadedmetadata = () => {
-        durationDisplay.textContent = formatTime(audio.duration);
-        progressBar.max = audio.duration;
-    };
-}
-
-// Play the next song automatically when the current song ends
-function playNextSong() {
-    if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
-        currentSongIndex += 1;
-        loadSong(currentAlbum, currentSongIndex);
-    } else {
-        audio.pause();
-        playButton.style.display = 'block';
-        pauseButton.style.display = 'none';
-    }
-}
-
-// Event listener for when a song ends
-audio.addEventListener('ended', playNextSong);
-
-// Initialize album and song list
-function createMusicList() {
-    const albumList = document.getElementById('albumList');
-    albumList.innerHTML = ''; // Clear existing content
-
-    albums.forEach((album, albumIndex) => {
-        const albumDiv = document.createElement('div');
-        albumDiv.classList.add('album');
-        albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-
-        album.songs.forEach((song, songIndex) => {
-            const songDiv = document.createElement('div');
-            songDiv.classList.add('song');
-      
-      songDiv.textContent = song.title;
-
-            songDiv.addEventListener('click', () => {
-                loadSong(album, songIndex); // Load and play the selected song
-            }); give me modified code which allows the functioning of previous and next button 
-
-            albumDiv.appendChild(songDiv);
-        });
-
-        albumList.appendChild(albumDiv);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', createMusicList);
