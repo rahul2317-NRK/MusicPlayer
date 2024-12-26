@@ -110,40 +110,60 @@ image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307
 const audio = document.getElementById('audio');
 const playButton = document.getElementById('play');
 const pauseButton = document.getElementById('pause');
+const prevButton = document.getElementById('prevButton');
+const nextButton = document.getElementById('nextButton');
 const titleDisplay = document.getElementById('title');
 const artistDisplay = document.getElementById('artist');
 const progressBar = document.getElementById('progress-bar');
 const currentTimeDisplay = document.getElementById('currentTime');
 const durationDisplay = document.getElementById('duration');
 const volumeControl = document.getElementById('volume');
+const albumList = document.getElementById('albumList');
+const searchInput = document.getElementById('searchInput');
+const searchButton = document.getElementById('searchButton');
 
 let currentAlbumIndex = 0;
 let currentSongIndex = 0;
-let currentAlbum = []; // To hold the current album data
+let currentAlbum = [];
 
+// Mock data for albums and songs (replace with your data)
+const albums = [
+    {
+        title: 'Album 1',
+        songs: [
+            { title: 'Song 1', artist: 'Artist 1', src: 'song1.mp3', image: 'cover1.jpg' },
+            { title: 'Song 2', artist: 'Artist 2', src: 'song2.mp3', image: 'cover2.jpg' }
+        ]
+    },
+    {
+        title: 'Album 2',
+        songs: [
+            { title: 'Song A', artist: 'Artist A', src: 'songA.mp3', image: 'coverA.jpg' },
+            { title: 'Song B', artist: 'Artist B', src: 'songB.mp3', image: 'coverB.jpg' }
+        ]
+    }
+];
+
+// Utility function to format time
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function loadSong(src, title, artist = "Unknown Artist", image) {
-    if (!audio || !titleDisplay || !artistDisplay) return;
-
+// Function to load a song
+function loadSong(src, title, artist, image) {
     audio.src = src;
     titleDisplay.textContent = title;
     artistDisplay.textContent = artist;
-    const coverImage = document.getElementById('cover');
-    if (coverImage) coverImage.src = image;
+    document.getElementById('cover').src = image;
 
     audio.play();
     playButton.style.display = 'none';
     pauseButton.style.display = 'block';
 
-    const playerSection = document.getElementById('player-section');
-    if (playerSection) {
-        playerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    currentAlbum = albums[currentAlbumIndex];
+    currentSongIndex = currentAlbum.songs.findIndex(song => song.src === src);
 
     audio.onloadedmetadata = () => {
         durationDisplay.textContent = formatTime(audio.duration);
@@ -151,40 +171,7 @@ function loadSong(src, title, artist = "Unknown Artist", image) {
     };
 }
 
-function createMusicList() {
-    const albumList = document.getElementById('albumList');
-    if (!albumList || !albums) return;
-
-    albumList.innerHTML = ''; // Clear existing content
-    albums.forEach(album => displayAlbum(album));
-}
-
-function displayAlbum(album) {
-    const albumList = document.getElementById('albumList');
-    if (!albumList) return;
-
-    const albumDiv = document.createElement('div');
-    albumDiv.classList.add('album');
-    albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-    
-    album.songs.forEach(song => {
-        const songDiv = document.createElement('div');
-        songDiv.classList.add('song');
-        songDiv.textContent = song.title;
-        songDiv.setAttribute('data-src', song.src);
-        songDiv.setAttribute('data-image', song.image);
-        songDiv.addEventListener('click', () => {
-            loadSong(song.src, song.title, song.artist, song.image);
-            currentAlbumIndex = albums.indexOf(album); // Update current album
-            currentSongIndex = album.songs.indexOf(song); // Update current song index
-        });
-        albumDiv.appendChild(songDiv);
-    });
-
-    albumList.appendChild(albumDiv);
-}
-
-// Play/Pause functionality
+// Play and pause buttons
 playButton.addEventListener('click', () => {
     audio.play();
     playButton.style.display = 'none';
@@ -197,12 +184,32 @@ pauseButton.addEventListener('click', () => {
     playButton.style.display = 'block';
 });
 
-// Time update and progress bar handling
+// Next and Previous buttons
+prevButton.addEventListener('click', () => {
+    if (currentSongIndex > 0) {
+        currentSongIndex--;
+    } else {
+        currentSongIndex = currentAlbum.songs.length - 1; // Loop to last song
+    }
+    loadSong(currentAlbum.songs[currentSongIndex].src, currentAlbum.songs[currentSongIndex].title, currentAlbum.songs[currentSongIndex].artist, currentAlbum.songs[currentSongIndex].image);
+});
+
+nextButton.addEventListener('click', () => {
+    if (currentSongIndex < currentAlbum.songs.length - 1) {
+        currentSongIndex++;
+    } else {
+        currentSongIndex = 0; // Loop to first song
+    }
+    loadSong(currentAlbum.songs[currentSongIndex].src, currentAlbum.songs[currentSongIndex].title, currentAlbum.songs[currentSongIndex].artist, currentAlbum.songs[currentSongIndex].image);
+});
+
+// Update progress bar
 audio.addEventListener('timeupdate', () => {
     currentTimeDisplay.textContent = formatTime(audio.currentTime);
     progressBar.value = audio.currentTime;
 });
 
+// Progress bar input to change song position
 progressBar.addEventListener('input', () => {
     audio.currentTime = progressBar.value;
 });
@@ -212,77 +219,41 @@ volumeControl.addEventListener('input', () => {
     audio.volume = volumeControl.value;
 });
 
-// Search functionality
-document.getElementById('searchButton').addEventListener('click', performSearch);
-document.getElementById('searchInput').addEventListener('input', performSearch);
+// Display albums and songs list
+function displayAlbums() {
+    albumList.innerHTML = '';
+    albums.forEach((album, albumIndex) => {
+        const albumDiv = document.createElement('div');
+        albumDiv.classList.add('album');
+        albumDiv.innerHTML = `<h3>${album.title}</h3>`;
+        
+        album.songs.forEach(song => {
+            const songDiv = document.createElement('div');
+            songDiv.classList.add('song');
+            songDiv.textContent = song.title;
+            songDiv.addEventListener('click', () => {
+                currentAlbumIndex = albumIndex;
+                loadSong(song.src, song.title, song.artist, song.image);
+            });
+            albumDiv.appendChild(songDiv);
+        });
 
-function performSearch() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const albumList = document.getElementById('albumList');
-    if (!albumList) return;
-
-    albumList.innerHTML = ''; // Clear the current album list
-
-    albums.forEach(album => {
-        if (album.title.toLowerCase().includes(searchTerm)) {
-            displayAlbum(album);
-        } else {
-            const matchingSongs = album.songs.filter(song =>
-                song.title.toLowerCase().includes(searchTerm)
-            );
-            if (matchingSongs.length > 0) {
-                const filteredAlbum = { ...album, songs: matchingSongs };
-                displayAlbum(filteredAlbum);
-            }
-        }
+        albumList.appendChild(albumDiv);
     });
-
-    if (searchTerm === '') createMusicList();
 }
 
-// Handle song transitions when current song finishes
-audio.addEventListener('ended', () => {
-    if (currentSongIndex < currentAlbum.songs.length - 1) {
-        currentSongIndex++;
-        const nextSong = currentAlbum.songs[currentSongIndex];
-        loadSong(nextSong.src, nextSong.title, nextSong.artist, nextSong.image);
-    } else {
-        // If it's the last song, do nothing or reset to first song
-        currentSongIndex = 0; // Optionally reset to first song in the album
-        const firstSong = currentAlbum.songs[currentSongIndex];
-        loadSong(firstSong.src, firstSong.title, firstSong.artist, firstSong.image);
-    }
+// Search functionality
+searchButton.addEventListener('click', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    const searchResults = albums.filter(album => 
+        album.title.toLowerCase().includes(searchTerm) || 
+        album.songs.some(song => song.title.toLowerCase().includes(searchTerm))
+    );
+    displayAlbums(searchResults);
 });
 
-// Previous and Next song buttons
-document.getElementById('prevButton').addEventListener('click', () => {
-    if (currentSongIndex > 0) {
-        currentSongIndex--;
-    } else {
-        currentSongIndex = currentAlbum.songs.length - 1; // Go to last song if at the start
-    }
-    const prevSong = currentAlbum.songs[currentSongIndex];
-    loadSong(prevSong.src, prevSong.title, prevSong.artist, prevSong.image);
-});
+// On DOMContentLoaded, display the albums
+document.addEventListener('DOMContentLoaded', displayAlbums);
 
-document.getElementById('nextButton').addEventListener('click', () => {
-    if (currentSongIndex < currentAlbum.songs.length - 1) {
-        currentSongIndex++;
-    } else {
-        currentSongIndex = 0; // Go to first song if at the end
-    }
-    const nextSong = currentAlbum.songs[currentSongIndex];
-    loadSong(nextSong.src, nextSong.title, nextSong.artist, nextSong.image);
-});
-
-// Update progress bar background
-progressBar.addEventListener('input', () => {
-    const value = progressBar.value / progressBar.max * 100;
-    progressBar.style.background = `linear-gradient(to right, #707b7c ${value}%, #bdc3c7 ${value}%)`;
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    createMusicList();
-});
 
 
