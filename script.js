@@ -121,7 +121,7 @@ const nextButton = document.getElementById('next');
 const albumList = document.getElementById('albumList');
 const searchBar = document.getElementById('searchBar');
 
-let currentAlbum = null;
+let currentAlbumIndex = 0;
 let currentSongIndex = 0;
 
 function formatTime(seconds) {
@@ -130,9 +130,10 @@ function formatTime(seconds) {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-function loadSong(album, songIndex) {
-    currentAlbum = album;
+function loadSong(albumIndex, songIndex) {
+    currentAlbumIndex = albumIndex;
     currentSongIndex = songIndex;
+    const album = albums[albumIndex];
     const song = album.songs[songIndex];
 
     if (!song) {
@@ -156,9 +157,11 @@ function loadSong(album, songIndex) {
 }
 
 function playNextSong() {
-    if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
-        currentSongIndex += 1;
-        loadSong(currentAlbum, currentSongIndex);
+    const album = albums[currentAlbumIndex];
+    if (currentSongIndex < album.songs.length - 1) {
+        loadSong(currentAlbumIndex, currentSongIndex + 1);
+    } else if (currentAlbumIndex < albums.length - 1) {
+        loadSong(currentAlbumIndex + 1, 0);
     } else {
         console.log('No next song available');
         audio.pause();
@@ -168,9 +171,11 @@ function playNextSong() {
 }
 
 function playPreviousSong() {
-    if (currentAlbum && currentSongIndex > 0) {
-        currentSongIndex -= 1;
-        loadSong(currentAlbum, currentSongIndex);
+    if (currentSongIndex > 0) {
+        loadSong(currentAlbumIndex, currentSongIndex - 1);
+    } else if (currentAlbumIndex > 0) {
+        const prevAlbum = albums[currentAlbumIndex - 1];
+        loadSong(currentAlbumIndex - 1, prevAlbum.songs.length - 1);
     } else {
         console.log('No previous song available');
     }
@@ -179,7 +184,7 @@ function playPreviousSong() {
 function createMusicList(filteredAlbums = albums) {
     albumList.innerHTML = '';
 
-    filteredAlbums.forEach((album) => {
+    filteredAlbums.forEach((album, albumIndex) => {
         const albumDiv = document.createElement('div');
         albumDiv.classList.add('album');
         albumDiv.innerHTML = `<h3>${album.title}</h3>`;
@@ -190,7 +195,7 @@ function createMusicList(filteredAlbums = albums) {
             songDiv.textContent = song.title;
 
             songDiv.addEventListener('click', () => {
-                loadSong(album, songIndex);
+                loadSong(albumIndex, songIndex);
             });
 
             albumDiv.appendChild(songDiv);
@@ -205,12 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchBar.addEventListener('input', (event) => {
         const query = event.target.value.toLowerCase();
-        const filteredAlbums = albums.map(album => {
-            const filteredSongs = album.songs.filter(song =>
-                song.title.toLowerCase().includes(query) || album.title.toLowerCase().includes(query)
-            );
-            return { ...album, songs: filteredSongs };
-        }).filter(album => album.songs.length > 0);
+        const filteredAlbums = albums
+            .map(album => {
+                const filteredSongs = album.songs.filter(song =>
+                    song.title.toLowerCase().includes(query) || album.title.toLowerCase().includes(query)
+                );
+                return { ...album, songs: filteredSongs };
+            })
+            .filter(album => album.songs.length > 0);
 
         createMusicList(filteredAlbums);
     });
@@ -246,4 +253,3 @@ audio.addEventListener('ended', playNextSong);
 volumeControl.addEventListener('input', () => {
     audio.volume = volumeControl.value;
 });
-
