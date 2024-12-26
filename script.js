@@ -107,161 +107,143 @@ image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307
 
 ];
 
- const audio = document.getElementById('audio');
-        const playButton = document.getElementById('play');
-        const pauseButton = document.getElementById('pause');
-        const titleDisplay = document.getElementById('title');
-        const artistDisplay = document.getElementById('artist');
-        const progressBar = document.getElementById('progress-bar');
-        const currentTimeDisplay = document.getElementById('currentTime');
-        const durationDisplay = document.getElementById('duration');
-        const volumeControl = document.getElementById('volume');
-        const previousButton = document.getElementById('previous');
-        const nextButton = document.getElementById('next');
-        const albumList = document.getElementById('albumList');
+const audio = document.getElementById('audio');
+const playButton = document.getElementById('play');
+const pauseButton = document.getElementById('pause');
+const titleDisplay = document.getElementById('title');
+const artistDisplay = document.getElementById('artist');
+const progressBar = document.getElementById('progress-bar');
+const currentTimeDisplay = document.getElementById('currentTime');
+const durationDisplay = document.getElementById('duration');
+const volumeControl = document.getElementById('volume');
+const previousButton = document.getElementById('previous');
+const nextButton = document.getElementById('next');
+const albumList = document.getElementById('albumList');
+const searchBar = document.getElementById('searchBar');
 
-        let currentAlbum = null;
-        let currentSongIndex = 0;
+let currentAlbum = null;
+let currentSongIndex = 0;
 
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-        }
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+}
 
-        function loadSong(album, songIndex) {
-            currentAlbum = album;
-            currentSongIndex = songIndex;
-            const song = album.songs[songIndex];
+function loadSong(album, songIndex) {
+    currentAlbum = album;
+    currentSongIndex = songIndex;
+    const song = album.songs[songIndex];
 
-            if (!song) {
-                console.error("Song not found at index:", songIndex);
-                return;
-            }
+    if (!song) {
+        console.error("Song not found at index:", songIndex);
+        return;
+    }
 
-            audio.src = song.src;
-            titleDisplay.textContent = song.title;
-            artistDisplay.textContent = song.artist || "Unknown Artist";
-            document.getElementById('cover').src = song.image;
+    audio.src = song.src;
+    titleDisplay.textContent = song.title;
+    artistDisplay.textContent = song.artist || "Unknown Artist";
+    document.getElementById('cover').src = song.image;
 
-            audio.play();
-            playButton.style.display = 'none';
-            pauseButton.style.display = 'block';
+    audio.play();
+    playButton.style.display = 'none';
+    pauseButton.style.display = 'block';
 
-            audio.onloadedmetadata = () => {
-                durationDisplay.textContent = formatTime(audio.duration);
-                progressBar.max = audio.duration;
-            };
-        }
+    audio.onloadedmetadata = () => {
+        durationDisplay.textContent = formatTime(audio.duration);
+        progressBar.max = audio.duration;
+    };
+}
 
-        function playNextSong() {
-            if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
-                currentSongIndex += 1;
-                loadSong(currentAlbum, currentSongIndex);
-            } else {
-                console.log('No next song available');
-                audio.pause();
-                playButton.style.display = 'block';
-                pauseButton.style.display = 'none';
-            }
-        }
+function playNextSong() {
+    if (currentAlbum && currentSongIndex < currentAlbum.songs.length - 1) {
+        currentSongIndex += 1;
+        loadSong(currentAlbum, currentSongIndex);
+    } else {
+        console.log('No next song available');
+        audio.pause();
+        playButton.style.display = 'block';
+        pauseButton.style.display = 'none';
+    }
+}
 
-        function playPreviousSong() {
-            if (currentAlbum && currentSongIndex > 0) {
-                currentSongIndex -= 1;
-                loadSong(currentAlbum, currentSongIndex);
-            } else {
-                console.log('No previous song available');
-            }
-        }
+function playPreviousSong() {
+    if (currentAlbum && currentSongIndex > 0) {
+        currentSongIndex -= 1;
+        loadSong(currentAlbum, currentSongIndex);
+    } else {
+        console.log('No previous song available');
+    }
+}
 
-        function createMusicList() {
-            albumList.innerHTML = '';
+function createMusicList(filteredAlbums = albums) {
+    albumList.innerHTML = '';
 
-            albums.forEach((album) => {
-                const albumDiv = document.createElement('div');
-                albumDiv.classList.add('album');
-                albumDiv.innerHTML = `<h3>${album.title}</h3>`;
+    filteredAlbums.forEach((album) => {
+        const albumDiv = document.createElement('div');
+        albumDiv.classList.add('album');
+        albumDiv.innerHTML = `<h3>${album.title}</h3>`;
 
-                album.songs.forEach((song, songIndex) => {
-                    const songDiv = document.createElement('div');
-                    songDiv.classList.add('song');
-                    songDiv.textContent = song.title;
+        album.songs.forEach((song, songIndex) => {
+            const songDiv = document.createElement('div');
+            songDiv.classList.add('song');
+            songDiv.textContent = song.title;
 
-                    songDiv.addEventListener('click', () => {
-                        loadSong(album, songIndex);
-                    });
-
-                    albumDiv.appendChild(songDiv);
-                });
-
-                albumList.appendChild(albumDiv);
+            songDiv.addEventListener('click', () => {
+                loadSong(album, songIndex);
             });
-        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            createMusicList();
-
-            document.getElementById('searchBar').addEventListener('input', (event) => {
-                const query = event.target.value.toLowerCase();
-                const filteredAlbums = albums.map(album => {
-                    const filteredSongs = album.songs.filter(song =>
-                        song.title.toLowerCase().includes(query) || album.title.toLowerCase().includes(query)
-                    );
-                    return { ...album, songs: filteredSongs };
-                }).filter(album => album.songs.length > 0);
-
-                albumList.innerHTML = '';
-                filteredAlbums.forEach((album) => {
-                    const albumDiv = document.createElement('div');
-                    albumDiv.classList.add('album');
-                    albumDiv.innerHTML = `<h3>${album.title}</h3>`;
-
-                    album.songs.forEach((song, songIndex) => {
-                        const songDiv = document.createElement('div');
-                        songDiv.classList.add('song');
-                        songDiv.textContent = song.title;
-
-                        songDiv.addEventListener('click', () => {
-                            loadSong(album, songIndex);
-                        });
-
-                        albumDiv.appendChild(songDiv);
-                    });
-
-                    albumList.appendChild(albumDiv);
-                });
-            });
+            albumDiv.appendChild(songDiv);
         });
 
-        playButton.addEventListener('click', () => {
-            audio.play();
-            playButton.style.display = 'none';
-            pauseButton.style.display = 'block';
-        });
+        albumList.appendChild(albumDiv);
+    });
+}
 
-        pauseButton.addEventListener('click', () => {
-            audio.pause();
-            playButton.style.display = 'block';
-            pauseButton.style.display = 'none';
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    createMusicList();
 
-        previousButton.addEventListener('click', playPreviousSong);
-        nextButton.addEventListener('click', playNextSong);
+    searchBar.addEventListener('input', (event) => {
+        const query = event.target.value.toLowerCase();
+        const filteredAlbums = albums.map(album => {
+            const filteredSongs = album.songs.filter(song =>
+                song.title.toLowerCase().includes(query) || album.title.toLowerCase().includes(query)
+            );
+            return { ...album, songs: filteredSongs };
+        }).filter(album => album.songs.length > 0);
 
-        audio.addEventListener('timeupdate', () => {
-            const currentTime = audio.currentTime;
-            currentTimeDisplay.textContent = formatTime(currentTime);
-            progressBar.value = currentTime;
-        });
+        createMusicList(filteredAlbums);
+    });
+});
 
-        progressBar.addEventListener('input', () => {
-            audio.currentTime = progressBar.value;
-        });
+playButton.addEventListener('click', () => {
+    audio.play();
+    playButton.style.display = 'none';
+    pauseButton.style.display = 'block';
+});
 
-        audio.addEventListener('ended', playNextSong);
+pauseButton.addEventListener('click', () => {
+    audio.pause();
+    playButton.style.display = 'block';
+    pauseButton.style.display = 'none';
+});
 
-        volumeControl.addEventListener('input', () => {
-            audio.volume = volumeControl.value;
-        });
+previousButton.addEventListener('click', playPreviousSong);
+nextButton.addEventListener('click', playNextSong);
+
+audio.addEventListener('timeupdate', () => {
+    const currentTime = audio.currentTime;
+    currentTimeDisplay.textContent = formatTime(currentTime);
+    progressBar.value = currentTime;
+});
+
+progressBar.addEventListener('input', () => {
+    audio.currentTime = progressBar.value;
+});
+
+audio.addEventListener('ended', playNextSong);
+
+volumeControl.addEventListener('input', () => {
+    audio.volume = volumeControl.value;
+});
 
