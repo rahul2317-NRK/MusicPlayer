@@ -377,4 +377,3 @@ function createMusicList() {
 }
 
 document.addEventListener('DOMContentLoaded', createMusicList);
-
