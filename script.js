@@ -1,4 +1,4 @@
-const album = [
+const albums = [
     {
             title: "Devara Part-1",
         songs: [
