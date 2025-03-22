@@ -8,7 +8,30 @@ const albums = [
             { title: "Chuttamalle", src: "[iSongs.info] 03 - Chuttamalle.mp3", artist: "Anirudh", image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
             { title: "Fear Song", src: "[iSongs.info] 02 - Fear Song.mp3", artist: "Anirudh", image: "https://stat4.bollywoodhungama.in/wp-content/uploads/2024/09/Devara-Part-1-6.jpg" },
         ]
-    }
+    },
+    {
+        title: "Vettaiyan",
+        songs: [
+            { title: "Hunter", artist: "Anirudh", src: "[iSongs.info] 02 - Hunter Entry.mp3", image: "https://upload.wikimedia.org/wikipedia/en/6/68/Vettaiyan_poster.jpg" },
+        ]
+    },
+    {
+        title: "Janaka Aithe Ganaka",
+        songs: [
+          { title: "Naa Favourite Naa Pellam", artist: "Karthik", src: "[iSongs.info] 01 - Naa Favourite Naa Pellam.mp3", image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Ganaka-New-Release-Date-2.jpg" },
+          { title: "Santosham Ee Poota", artist: "Karthik", src: "[iSongs.info] 05 - Santosham Ee Poota.mp3", image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Ganaka-New-Release-Date-2.jpg" },
+          { title: "Nuvve Naku Lokam", artist: "Karthik", src: "[iSongs.info] 02 - Nuvve Naku Lokam.mp3", image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Ganaka-New-Release-Date-2.jpg" }
+     ]
+  },
+    
+        { 
+            title: "Sathyam Sundaram",
+            songs: [
+                 { title: "Pothoo Ne Pothoo", artist: "Govind", src: "[iSongs.info] 04 - Pothoo Ne Pothoo.mp3", image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg" },
+                 { title: "Evaro Ithanevaro", artist: "Govind", src: "[iSongs.info] 01 - Evaro Ithanevaro.mp3", image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg"}
+    ]
+
+ }
 ];
 
 const audio = document.getElementById('audio');
