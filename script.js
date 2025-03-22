@@ -31,17 +31,12 @@ const albums = [
     {
         title: "Vettaiyan",
         songs: [
-            {title: "Manasilaayo", 
-            artist: "Anirudh",
-            src: "[iSongs.info] 01 - Manasilaayo.mp3", 
-            image: "https://upload.wikimedia.org/wikipedia/en/6/68/Vettaiyan_poster.jpg" 
-            },
             {
             title: "Hunter", 
             artist: "Anirudh",
             src: "[iSongs.info] 02 - Hunter Entry.mp3", 
             image: "https://upload.wikimedia.org/wikipedia/en/6/68/Vettaiyan_poster.jpg" 
-            }
+            },
         ]
     },
     {
@@ -67,18 +62,7 @@ image: "https://www.moviespuzzle.com/wp-content/uploads/2024/09/Janaka-Aithe-Gan
 }
 ]
         },
-        {
-            title: "Amaran",
-            songs: [
-                    {
-                        title: "Hey Rangule", 
-artist: "Ramya, Anurag",
-src: "[iSongs.info] 01 - Hey Rangule.mp3", 
-image: "https://upload.wikimedia.org/wikipedia/en/5/54/Amaran_2024_poster.jpg" 
-
-                    },
-                ]
-        },
+    
         {
             title: "Sathyam Sundaram",
             songs: [
@@ -86,12 +70,6 @@ image: "https://upload.wikimedia.org/wikipedia/en/5/54/Amaran_2024_poster.jpg"
 title: "Pothoo Ne Pothoo", 
 artist: "Govind",
 src: "[iSongs.info] 04 - Pothoo Ne Pothoo.mp3", 
-image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg" 
-},
-{
-title: "Palle Seema", 
-artist: "Govind",
-src: "[iSongs.info] 03 - Palle Seema.mp3", 
 image: "https://assetscdn1.paytm.com/images/cinema/Sathyam-Sundaram--608x800-307d6560-799f-11ef-ad27-dfa11df60ee4.jpg" 
 },
 {
